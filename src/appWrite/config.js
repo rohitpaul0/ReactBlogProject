@@ -26,7 +26,7 @@ export class Service {
           content,
           featuredImage,
           status,
-          userId,
+          userId
         }
       );
     } catch (error) {
@@ -120,7 +120,7 @@ export class Service {
   }
 
   getFilePriview(fileId) {
-    return this.bucket.getFilePreview(conf.appwriteBucketId, fileId);
+    return this.bucket.getFileView(conf.appwriteBucketId, fileId);
   }
 }
 

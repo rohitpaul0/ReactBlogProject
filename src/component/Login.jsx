@@ -10,19 +10,19 @@ function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { register, handleSubmit } = useForm();
-  const [error, SetError] = useState("");
+  const [error, setError] = useState("");
 
   const login = async (data) => {
-    SetError("");
+    setError("");
     try {
       const session = await authService.login(data);
       if (session) {
-        const userData = authService.getCurrentUser();
+        const userData = await authService.getCurrentUser();
         if (userData) dispatch(authLogin(userData));
         navigate("/");
       }
     } catch (error) {
-      SetError(error.message);
+      setError(error.message);
     }
   };
 
