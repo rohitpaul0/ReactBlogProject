@@ -14,13 +14,16 @@ function EditPost() {
     //     if(slug){
     //         appwriteService.getPost(slug).then((post)=>{
     //             if(post){
-    //                 setPosts(post)
+    //                 setPost(post)
     //             }
     //         })
     //     }else{
     //         navigate('/')
     //     }
     // },[slug,navigate])
+    //  const post = useSelector((state) =>
+    //     state.posts.posts.find((p) => p.$id === slug)
+    //   );
 
   const posts = useSelector((state) => state.posts.posts);
 
@@ -31,7 +34,7 @@ function EditPost() {
     if (existingPost) {
       setPost(existingPost);
     } else if (slug) {
-      
+
       appwriteService.getPost(slug).then((fetchedPost) => {
         if (fetchedPost) {
           dispatch(addPost(fetchedPost));   // Save to Redux

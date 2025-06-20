@@ -1,16 +1,9 @@
-import React, { useState, useEffect } from "react";
 import { Container, PostCard } from "../component";
-import appwriteService from "../appWrite/config";
+import { useSelector } from "react-redux";
 
 function AllPost() {
-  const [posts, SetPosts] = useState([]);
-  useEffect(() => {
-    appwriteService.getPosts([]).then((posts) => {
-      if (posts) {
-        SetPosts(posts.documents);
-      }
-    });
-  }, []);
+    const posts= useSelector((state)=> state.posts.posts);
+    
   return (
     <div className="w-full min-h-[75vh] py-8">
       <Container>

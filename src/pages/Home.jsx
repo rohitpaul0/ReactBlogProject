@@ -1,30 +1,10 @@
-import React, { useState, useEffect } from "react";
-import appwriteService from "../appWrite/config";
 import auth from "../appWrite/auth";
 import { Container, PostCard } from "../component";
-import { setPosts } from "../Store/postSlice";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 function Home() {
-  const [user, setUser] = useState(null);
-  const dispatch = useDispatch();
-  // console.log(user);
-
   const posts = useSelector((state) => state.posts.posts);
-
-  useEffect(() => {
-    appwriteService.getPosts().then((posts) => {
-      if (posts) {
-        dispatch(setPosts(posts.documents));
-      }
-    });
-
-    const loadUser = async () => {
-      const currentUser = await auth.getCurrentUser();
-      setUser(currentUser);
-    };
-    loadUser();
-  }, []);
+  const user = useSelector((state) => state.auth.userData);
 
   if (posts.length === 0) {
     return (
@@ -47,7 +27,7 @@ function Home() {
   return (
     <div className="w-full py-8 min-h-[75vh]">
       <Container>
-        <div className="flex flex-start ml-3">
+        <div className="flex flex-start ml-3 mb-3 text-lg">
           {user ? <p>Welcome... {user.name}</p> : null}
         </div>
         <div className="flex flex-col md:flex-row w-full flex-wrap">

@@ -17,7 +17,7 @@ export default function Post() {
   const post = useSelector((state) =>
     state.posts.posts.find((p) => p.$id === slug)
   );
-``
+  
   // If not found in Redux, fetch from Appwrite
   const [loading, setLoading] = useState(!post);
 
