@@ -37,8 +37,7 @@ export default function PostForm({ post }) {
     } else {
       const file = await appWriteService.uploadFile(data.image[0]);
 
-      if (file) { 
-
+      if (file) {
         const fileId = file.$id;
         data.featuredImage = fileId;
         const dbPost = await appWriteService.createPost({

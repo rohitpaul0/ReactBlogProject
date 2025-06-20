@@ -12,7 +12,7 @@ function AllPost() {
     });
   }, []);
   return (
-    <div className="w-full py-8">
+    <div className="w-full min-h-[75vh] py-8">
       <Container>
         <div className="flex flex-col md:flex-row w-full flex-wrap">
           {posts.map((post) => (
