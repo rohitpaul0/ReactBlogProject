@@ -2,8 +2,9 @@ import React, { useCallback, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Input, Button, Select, RTE } from "../index";
 import appWriteService from "../../appWrite/config";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { addPost, updatePost } from "../../Store/postSlice";
 
 export default function PostForm({ post }) {
   const { register, handleSubmit, watch, setValue, control, getValues } =
@@ -17,12 +18,13 @@ export default function PostForm({ post }) {
     });
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const userData = useSelector((state) => state.auth.userData);
 
   const submit = async (data) => {
     if (post) {
       const file = data.image[0]
-        ? appWriteService.uploadFile(data.image[0])
+        ? await appWriteService.uploadFile(data.image[0])
         : null;
       if (file) {
         appWriteService.deleteFile(post.featuredImage);
@@ -31,8 +33,10 @@ export default function PostForm({ post }) {
         ...data,
         featuredImage: file ? file.$id : undefined,
       });
-      if (dbPost) {
-        navigate(`/post/${dbPost.$id}`);
+      console.log(dbPost);
+      if(dbPost){
+        dispatch(updatePost(dbPost));
+         navigate(`/post/${dbPost.$id}`)
       }
     } else {
       const file = await appWriteService.uploadFile(data.image[0]);
@@ -45,7 +49,9 @@ export default function PostForm({ post }) {
           userId: userData.$id,
         });
         if (dbPost) {
-          navigate(`/post/${dbPost.$id}`);
+          dispatch(addPost(dbPost));
+          //  navigate(`/post/${dbPost.$id}`);
+          navigate("/");
         }
       }
     }
