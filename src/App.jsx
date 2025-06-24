@@ -24,8 +24,8 @@ function App() {
   }, []);
 
   useEffect(() => {
-    appWriteService.getPosts().
-    then((res) => dispatch(setPosts(res.documents)))
+    appWriteService.getPosts()
+    .then((res) => dispatch(setPosts(res.documents)))
     .catch((err)=> dispatch(setError(err.message)))
     .finally(()=> setLoading(false))
   }, []);
