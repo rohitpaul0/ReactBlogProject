@@ -1,26 +1,30 @@
 import { Container, PostCard } from "../component";
 import { useDispatch, useSelector } from "react-redux";
-import { setPosts,setError } from "../Store/postSlice";
+import { setPosts, setError, setLoading } from "../Store/postSlice";
+import appWriteService from "../appWrite/config";
+import { useEffect } from "react";
 
 function Home() {
   const posts = useSelector((state) => state.posts.posts);
   const user = useSelector((state) => state.auth.userData);
   const userstatus = useSelector((state) => state.auth.status);
   const dispatch = useDispatch();
+  const loading = useSelector((state) => state.posts.loading);
 
-    if(!posts){
-    useEffect(() => {
-    appWriteService.getPosts()
-    .then((res) => dispatch(setPosts(res.documents)))
-    .catch((err)=> dispatch(setError(err.message)))
-    .finally(()=> setLoading(false))
-  }, [posts]);
-}
-
-  console.log("user", user);
-  console.log("posts", posts);
-  console.log(typeof posts);
-  console.log("posts?.length", posts?.length);
+  useEffect(() => {
+    if (posts?.length === 0) {
+      dispatch(setLoading(true));
+      appWriteService
+        .getPosts()
+        .then((posts) => {
+          dispatch(setPosts(posts.documents));
+        })
+        .catch((error) => {
+          dispatch(setError(error));
+        })
+        .finally(() => dispatch(setLoading(false)));
+    }
+  }, []);
 
   if (!userstatus) {
     return (
@@ -28,7 +32,7 @@ function Home() {
         <Container>
           <div className=" flex flex-wrap">
             <div className="p-2 w-full">
-              <h1 
+              <h1
                 className=" text-3xl font-bold
                             "
               >
@@ -41,19 +45,27 @@ function Home() {
     );
   }
   return (
-    <div className="w-full py-8 min-h-[75vh]">
-      <Container>
-        <div className="flex flex-start ml-3 mb-3 text-lg">
-          {user ? <p>Welcome... {user.name}</p> : null}
+    <div className="w-full min-h-[75vh] py-8">
+      {loading ? (
+        <div className="flex items-center justify-center w-full h-[50vh]">
+          <div className="text-2xl font-semibold text-center">
+            Loading posts...
+          </div>
         </div>
-        <div className="flex flex-col md:flex-row w-full flex-wrap">
-          {posts?.map((post) => (
-            <div key={post.$id} className="w-full p-2 md:w-1/3 lg:w-1/4">
-              <PostCard {...post} />
-            </div>
-          ))}
-        </div>
-      </Container>
+      ) : (
+        <Container>
+          <div className="flex flex-start ml-3 mb-10 text-3xl font-bold text-white">
+            {user ? <p>Welcome {user.name}</p> : null}
+          </div>
+          <div className="flex flex-col md:flex-row w-full flex-wrap">
+            {posts?.map((post) => (
+              <div key={post.$id} className="w-full p-2 md:w-1/2 lg:w-1/3">
+                <PostCard {...post} />
+              </div>
+            ))}
+          </div>
+        </Container>
+      )}
     </div>
   );
 }
