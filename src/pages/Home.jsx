@@ -1,16 +1,28 @@
 import { Container, PostCard } from "../component";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { setPosts,setError } from "../Store/postSlice";
 
 function Home() {
   const posts = useSelector((state) => state.posts.posts);
   const user = useSelector((state) => state.auth.userData);
+  const userstatus = useSelector((state) => state.auth.status);
+  const dispatch = useDispatch();
+
+    if(!posts){
+    useEffect(() => {
+    appWriteService.getPosts()
+    .then((res) => dispatch(setPosts(res.documents)))
+    .catch((err)=> dispatch(setError(err.message)))
+    .finally(()=> setLoading(false))
+  }, [posts]);
+}
 
   console.log("user", user);
   console.log("posts", posts);
   console.log(typeof posts);
   console.log("posts?.length", posts?.length);
 
-  if (posts?.length === 0 ) {
+  if (!userstatus) {
     return (
       <div className="w-full min-h-[75vh] flex items-center py-8 mt-4 text-center">
         <Container>
