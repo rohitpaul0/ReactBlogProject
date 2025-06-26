@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect,useState } from "react";
 import { useForm } from "react-hook-form";
 import { Input, Button, Select, RTE } from "../index";
 import appWriteService from "../../appWrite/config";
@@ -11,7 +11,7 @@ export default function PostForm({ post }) {
     useForm({
       defaultValues: {
         title: post?.title || "",
-        slug: post?.slug || "",
+        slug: post?.$id || "",
         content: post?.content || "",
         status: post?.status || "active",
       },
@@ -20,6 +20,7 @@ export default function PostForm({ post }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const userData = useSelector((state) => state.auth.userData);
+  const [imagePreview, setImagePreview] = useState(post ? appWriteService.getFilePriview(post.featuredImage) : null);
 
   const submit = async (data) => {
     if (post) {
@@ -112,12 +113,19 @@ export default function PostForm({ post }) {
           type="file"
           className="mb-4"
           accept="image/png, image/jpg, image/jpeg, image/gif"
-          {...register("image", { required: !post })}
+          {...register("image", { required: !post },
+            {onchange:(e)=>{
+              const file =e.target.files[0];
+              if(file){
+                setImagePreview(URL.createObjectURL(file))
+              }
+            }}
+          )}
         />
-        {post && (
+        {imagePreview && (
           <div className="w-full mb-4">
             <img
-              src={appWriteService.getFilePriview(post.featuredImage)}
+              src={imagePreview}
               alt={post.title}
               className="rounded-lg"
             />
