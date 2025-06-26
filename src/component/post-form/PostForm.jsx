@@ -111,15 +111,19 @@ export default function PostForm({ post }) {
         <Input
           label="Featured Image :"
           type="file"
-          className="mb-4"
+          className="mb-4 file:mr-4 file:py-0.5 file:px-5 file:rounded-md file:border-1 file:text-sm file:font-semibold file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200"
           accept="image/png, image/jpg, image/jpeg, image/gif"
-          {...register("image", { required: !post },
-            {onchange:(e)=>{
-              const file =e.target.files[0];
-              if(file){
-                setImagePreview(URL.createObjectURL(file))
+          {...register("image", { 
+            required: !post,
+            onChange: (e) => {
+              const file = e.target.files[0];
+              if (file) {
+                const url = URL.createObjectURL(file);
+                setImagePreview(url);
               }
-            }}
+            }
+           },
+            
           )}
         />
         {imagePreview && (
