@@ -12,7 +12,7 @@ function Home() {
   const loading = useSelector((state) => state.posts.loading);
 
   useEffect(() => {
-    if (posts?.length === 0) {
+    if (posts?.length === 0 || !posts) {
       dispatch(setLoading(true));
       appWriteService
         .getPosts()
@@ -33,7 +33,7 @@ function Home() {
           <div className=" flex flex-wrap">
             <div className="p-2 w-full">
               <h1
-                className=" text-3xl font-bold
+                className=" text-3xl font-bold text-white
                             "
               >
                 Log in to read post
@@ -48,7 +48,7 @@ function Home() {
     <div className="w-full min-h-[75vh] py-8">
       {loading ? (
         <div className="flex items-center justify-center w-full h-[50vh]">
-          <div className="text-2xl font-semibold text-center">
+          <div className="text-2xl font-semibold text-center ">
             Loading posts...
           </div>
         </div>
