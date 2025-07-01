@@ -48,7 +48,7 @@ function Home() {
     <div className="w-full min-h-[75vh] py-8">
       {loading ? (
         <div className="flex items-center justify-center w-full h-[50vh]">
-          <div className="text-2xl font-semibold text-center ">
+          <div className="text-2xl font-semibold text-center text-white">
             Loading posts...
           </div>
         </div>
