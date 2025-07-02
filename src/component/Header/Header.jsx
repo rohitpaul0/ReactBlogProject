@@ -12,7 +12,6 @@ function Header() {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(!open);
 
-
   const navIteams = [
     {
       name: "Home",
@@ -72,18 +71,22 @@ function Header() {
               </li>
             )}
           </ul>
-          
+
           {/* Mobile Nav */}
-          <ul className="ml-auto flex flex-col absolute bg-[color:var(--card-color)] w-[250px] gap-3 pt-20 h-full left-0 top-0 md:hidden text-white text-lg">
+          <ul
+            className={`ml-auto flex flex-col absolute bg-[color:var(--card-color)] w-[250px] gap-3 pt-20 h-full left-0 top-0 md:hidden text-white text-lg transition-all duration-300 z-50 ${
+              open ? "block" : "hidden"
+            }`}
+          >
             {navIteams.map((iteam) =>
               iteam.active ? (
                 <li key={iteam.name}>
                   <button
                     onClick={() => {
                       navigate(iteam.slug);
+                      setOpen(false); // close menu on navigation
                     }}
-                    className="inline-block px-6 py-2 
-                    duration-200 hover:bg-blue-200 rounded-full"
+                    className="inline-block px-6 py-2 duration-200 hover:bg-blue-200 rounded-full"
                   >
                     {iteam.name}
                   </button>
@@ -97,7 +100,17 @@ function Header() {
             )}
           </ul>
 
-          { !open ? <MdOutlineMenu onClick={handleOpen} className="text-3xl md:hidden text-white" /> : <RxCross1 onClick={handleOpen} className="text-3xl md:hidden text-white" /> }
+          {!open ? (
+            <MdOutlineMenu
+              onClick={handleOpen}
+              className="text-3xl md:hidden text-white"
+            />
+          ) : (
+            <RxCross1
+              onClick={handleOpen}
+              className="text-3xl md:hidden text-white"
+            />
+          )}
         </nav>
       </Container>
     </header>
