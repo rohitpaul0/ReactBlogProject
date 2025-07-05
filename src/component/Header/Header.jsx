@@ -6,11 +6,12 @@ import { useSelector } from "react-redux";
 import { MdOutlineMenu } from "react-icons/md";
 import { RxCross1 } from "react-icons/rx";
 
-function Header() {
+  function Header() {
   const authStatus = useSelector((state) => state.auth.status);
   const navigate = useNavigate();
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(!open);
+
 
   const navIteams = [
     {
@@ -71,22 +72,19 @@ function Header() {
               </li>
             )}
           </ul>
-
+          
           {/* Mobile Nav */}
-          <ul
-            className={`ml-auto flex flex-col absolute bg-[color:var(--card-color)] w-[250px] gap-3 pt-20 h-full left-0 top-0 md:hidden text-white text-lg transition-all duration-300 z-50 ${
-              open ? "block" : "hidden"
-            }`}
-          >
+          <ul className={`ml-auto flex-col w-[250px] fixed bg-[color:var(--card-color)]  gap-3 pt-20 h-screen  left-0 top-0 text-white 
+          text-lg transform transition-transform duration-300 ease-in-out ${open ? 'translate-x-0' : '-translate-x-full' }`}>
             {navIteams.map((iteam) =>
               iteam.active ? (
                 <li key={iteam.name}>
                   <button
                     onClick={() => {
                       navigate(iteam.slug);
-                      setOpen(false); // close menu on navigation
                     }}
-                    className="inline-block px-6 py-2 duration-200 hover:bg-blue-200 rounded-full"
+                    className="inline-block px-6 py-2 
+                    duration-200 hover:bg-blue-200 rounded-full"
                   >
                     {iteam.name}
                   </button>
@@ -100,17 +98,7 @@ function Header() {
             )}
           </ul>
 
-          {!open ? (
-            <MdOutlineMenu
-              onClick={handleOpen}
-              className="text-3xl md:hidden text-white"
-            />
-          ) : (
-            <RxCross1
-              onClick={handleOpen}
-              className="text-3xl md:hidden text-white"
-            />
-          )}
+          { !open ? <MdOutlineMenu onClick={handleOpen} className="text-3xl md:hidden text-white" /> : <RxCross1 onClick={handleOpen} className="text-3xl md:hidden text-white" /> }
         </nav>
       </Container>
     </header>

@@ -1,10 +1,11 @@
-import React, { useCallback, useEffect,useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Input, Button, Select, RTE } from "../index";
 import appWriteService from "../../appWrite/config";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { addPost, updatePost } from "../../Store/postSlice";
+import imageCompression from "browser-image-compression";
 
 export default function PostForm({ post }) {
   const { register, handleSubmit, watch, setValue, control, getValues } =
@@ -20,13 +21,20 @@ export default function PostForm({ post }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const userData = useSelector((state) => state.auth.userData);
-  const [imagePreview, setImagePreview] = useState(post ? appWriteService.getFilePriview(post.featuredImage) : null);
+  const [imagePreview, setImagePreview] = useState(
+    post ? appWriteService.getFilePriview(post.featuredImage) : null
+  );
 
   const submit = async (data) => {
     if (post) {
       const file = data.image[0]
-        ? await appWriteService.uploadFile(data.image[0])
-        : null;
+      // const options={
+      //   maxSizeMB:1,
+      //   maxWidthOrHeight:1920,
+      //   useWebWorker:true
+      // };
+      // const compressedFile= await imageCompression(file,options)
+       ? await appWriteService.uploadFile(data.image[0]) : null;
       if (file) {
         appWriteService.deleteFile(post.featuredImage);
       }
@@ -34,9 +42,9 @@ export default function PostForm({ post }) {
         ...data,
         featuredImage: file ? file.$id : undefined,
       });
-      if(dbPost){
+      if (dbPost) {
         dispatch(updatePost(dbPost));
-         navigate(`/post/${dbPost.$id}`)
+        navigate(`/post/${dbPost.$id}`);
       }
     } else {
       const file = await appWriteService.uploadFile(data.image[0]);
@@ -113,7 +121,7 @@ export default function PostForm({ post }) {
           type="file"
           className="mb-4 file:mr-4 file:py-0.5 file:px-5 file:rounded-md file:border-1 file:text-sm file:font-semibold file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200"
           accept="image/png, image/jpg, image/jpeg, image/gif"
-          {...register("image", { 
+          {...register("image", {
             required: !post,
             onChange: (e) => {
               const file = e.target.files[0];
@@ -121,18 +129,12 @@ export default function PostForm({ post }) {
                 const url = URL.createObjectURL(file);
                 setImagePreview(url);
               }
-            }
-           },
-            
-          )}
+            },
+          })}
         />
         {imagePreview && (
           <div className="w-full mb-4">
-            <img
-              src={imagePreview}
-              alt={post.title}
-              className="rounded-lg"
-            />
+            <img src={imagePreview}  className="rounded-lg" />
           </div>
         )}
         <Select
