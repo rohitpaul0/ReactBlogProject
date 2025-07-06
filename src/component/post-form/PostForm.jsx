@@ -27,27 +27,36 @@ export default function PostForm({ post }) {
 
   const submit = async (data) => {
     if (post) {
-      const file = data.image[0]
-      // const options={
-      //   maxSizeMB:1,
-      //   maxWidthOrHeight:1920,
-      //   useWebWorker:true
-      // };
-      // const compressedFile= await imageCompression(file,options)
-       ? await appWriteService.uploadFile(data.image[0]) : null;
-      if (file) {
+      const file = data.image[0];
+      const options = {
+        maxSizeMB: 1,
+        maxWidthOrHeight: 1920,
+        useWebWorker: true,
+      };
+      const compressedFile = await imageCompression(file, options);
+      const finalFile = new File([compressedFile], file.name,{type: compressedFile.type})
+      const uploadFile = file ? await appWriteService.uploadFile(finalFile) : null;
+      if (uploadFile) {
         appWriteService.deleteFile(post.featuredImage);
       }
       const dbPost = await appWriteService.updatePost(post.$id, {
         ...data,
-        featuredImage: file ? file.$id : undefined,
+        featuredImage: uploadFile? uploadFile.$id : undefined,
       });
       if (dbPost) {
         dispatch(updatePost(dbPost));
         navigate(`/post/${dbPost.$id}`);
       }
     } else {
-      const file = await appWriteService.uploadFile(data.image[0]);
+      const image = data.image[0];
+      const options = {
+        maxSizeMB: 1,
+        maxWidthOrHeight: 1920,
+        useWebWorker: true,
+      };
+      const compressedFile = await imageCompression(image, options);
+      const finalFile = new File([compressedFile], image.name,{type: compressedFile.type})
+      const file = await appWriteService.uploadFile(finalFile);
 
       if (file) {
         const fileId = file.$id;
@@ -134,7 +143,7 @@ export default function PostForm({ post }) {
         />
         {imagePreview && (
           <div className="w-full mb-4">
-            <img src={imagePreview}  className="rounded-lg" />
+            <img src={imagePreview} className="rounded-lg" />
           </div>
         )}
         <Select
