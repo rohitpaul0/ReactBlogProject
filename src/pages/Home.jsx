@@ -28,7 +28,7 @@ function Home() {
 
   if (!userstatus) {
     return (
-      <div className="w-full min-h-[75vh] flex items-center py-8 mt-4 text-center">
+      <div className="w-full min-h-[80vh] flex items-center py-8 text-center">
         <Container>
           <div className=" flex flex-wrap">
             <div className="p-2 w-full">
@@ -45,9 +45,9 @@ function Home() {
     );
   }
   return (
-    <div className="w-full min-h-[75vh] py-8">
+    <div className="w-full min-h-[80vh] py-8">
       {loading ? (
-        <div className="flex items-center justify-center w-full h-[50vh]">
+        <div className="flex items-center justify-center w-full h-[80vh]">
           <div className="text-2xl font-semibold text-center text-white">
             Loading posts...
           </div>

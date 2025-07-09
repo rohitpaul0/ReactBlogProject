@@ -6,8 +6,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { addPost, updatePost } from "../../Store/postSlice";
 import imageCompression from "browser-image-compression";
+import { setLoading } from "../../Store/postSlice";
 
 export default function PostForm({ post }) {
+  const loading = useSelector((state) => state.posts.loading);
   const { register, handleSubmit, watch, setValue, control, getValues } =
     useForm({
       defaultValues: {
@@ -26,51 +28,77 @@ export default function PostForm({ post }) {
   );
 
   const submit = async (data) => {
-    if (post) {
-      const file = data.image[0];
-      const options = {
-        maxSizeMB: 1,
-        maxWidthOrHeight: 1920,
-        useWebWorker: true,
-      };
-      const compressedFile = await imageCompression(file, options);
-      const finalFile = new File([compressedFile], file.name,{type: compressedFile.type})
-      const uploadFile = file ? await appWriteService.uploadFile(finalFile) : null;
-      if (uploadFile) {
-        appWriteService.deleteFile(post.featuredImage);
-      }
-      const dbPost = await appWriteService.updatePost(post.$id, {
-        ...data,
-        featuredImage: uploadFile? uploadFile.$id : undefined,
-      });
-      if (dbPost) {
-        dispatch(updatePost(dbPost));
-        navigate(`/post/${dbPost.$id}`);
-      }
-    } else {
-      const image = data.image[0];
-      const options = {
-        maxSizeMB: 1,
-        maxWidthOrHeight: 1920,
-        useWebWorker: true,
-      };
-      const compressedFile = await imageCompression(image, options);
-      const finalFile = new File([compressedFile], image.name,{type: compressedFile.type})
-      const file = await appWriteService.uploadFile(finalFile);
+    dispatch(setLoading(true));
+    try {
+      if (post) {
+        const noChange =
+          data.title === post.title &&
+          data.slug === post.slug &&
+          data.content === post.content &&
+          data.status === post.status &&
+          !data.image?.[0];
+        if (noChange) {
+          dispatch(setLoading(false));
+          navigate("/");
+          return;
+        }
+        const file = data.image?.[0];
+        let uploadFile = null;
 
-      if (file) {
-        const fileId = file.$id;
-        data.featuredImage = fileId;
-        const dbPost = await appWriteService.createPost({
+        if (file) {
+          const options = {
+            maxSizeMB: 1,
+            maxWidthOrHeight: 1920,
+            useWebWorker: true,
+          };
+          const compressedFile = await imageCompression(file, options);
+          const finalFile = new File([compressedFile], file.name, {
+            type: compressedFile.type,
+          });
+          uploadFile = await appWriteService.uploadFile(finalFile);
+          if (uploadFile) {
+            await appWriteService.deleteFile(post.featuredImage);
+          }
+        }
+
+        const dbPost = await appWriteService.updatePost(post.$id, {
           ...data,
-          userId: userData.$id,
+          featuredImage: uploadFile ? uploadFile.$id : post.featuredImage,
         });
         if (dbPost) {
-          dispatch(addPost(dbPost));
-          //  navigate(`/post/${dbPost.$id}`);
-          navigate("/");
+          dispatch(updatePost(dbPost));
+          dispatch(setLoading(false));
+          navigate(`/post/${dbPost.$id}`);
+        }
+      } else {
+        const image = data.image[0];
+        const options = {
+          maxSizeMB: 1,
+          maxWidthOrHeight: 1920,
+          useWebWorker: true,
+        };
+        const compressedFile = await imageCompression(image, options);
+        const finalFile = new File([compressedFile], image.name, {
+          type: compressedFile.type,
+        });
+        const file = await appWriteService.uploadFile(finalFile);
+
+        if (file) {
+          const fileId = file.$id;
+          data.featuredImage = fileId;
+          const dbPost = await appWriteService.createPost({
+            ...data,
+            userId: userData.$id,
+          });
+          if (dbPost) {
+            dispatch(addPost(dbPost));
+            dispatch(setLoading(false));
+            navigate("/");
+          }
         }
       }
+    } catch (error) {
+      // console.error("Submittion Error:", error);
     }
   };
 
@@ -157,7 +185,13 @@ export default function PostForm({ post }) {
           bgColor={post ? "bg-green-500" : undefined}
           className="w-full"
         >
-          {post ? "Update" : "Submit"}
+          {post
+            ? loading
+              ? "Updating"
+              : "Update"
+            : loading
+            ? "Submitting"
+            : "Submit"}
         </Button>
       </div>
     </form>
