@@ -28,7 +28,7 @@ function Home() {
 
   if (!userstatus) {
     return (
-      <div className="w-full min-h-[80vh] flex items-center py-8 text-center">
+      <div className="w-full min-h-screen  md:min-h-[80vh] flex items-center py-8 text-center">
         <Container>
           <div className=" flex flex-wrap">
             <div className="p-2 w-full">
