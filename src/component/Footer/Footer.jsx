@@ -9,8 +9,8 @@ function Footer() {
           <Logo width="100px" />
         </div>
         <div>
-          <p className="text-sm text-gray-300">
-            &copy; Copyright 2025. All Rights Reserved by DevUI.
+          <p className="text-sm font-bold text-gray-300">
+            &copy; Copyright 2025.
           </p>
         </div>
       </div>

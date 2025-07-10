@@ -126,16 +126,16 @@ export default function PostForm({ post }) {
   }, [slugTransform, watch, setValue]);
 
   return (
-    <form onSubmit={handleSubmit(submit)} className="flex flex-wrap">
-      <div className="w-2/3 px-2">
-        <Input
-          label="Title :"
+    <form onSubmit={handleSubmit(submit)} className="flex flex-col md:flex-row w-full space-x-0 lg:space-x-10">
+      <div className="w-full h-full md:w-2/3 px-5">
+        <label className="text-white font-semibold text-lg">Title:</label>
+        <Input 
           placeholder="Title"
           className="mb-4"
           {...register("title", { required: true })}
         />
+        <label className="text-white font-semibold text-lg">Slug:</label>
         <Input
-          label="Slug :"
           placeholder="Slug"
           className="mb-4"
           {...register("slug", { required: true })}
@@ -145,14 +145,14 @@ export default function PostForm({ post }) {
             });
           }}
         />
+        <label className="text-white font-semibold text-lg">Content:</label>
         <RTE
-          label="Content :"
           name="content"
           control={control}
           defaultValue={getValues("content")}
         />
       </div>
-      <div className="w-1/3 px-2">
+      <div className="w-full md:w-1/3 px-2">
         <Input
           label="Featured Image :"
           type="file"
@@ -183,7 +183,7 @@ export default function PostForm({ post }) {
         <Button
           type="submit"
           bgColor={post ? "bg-green-500" : undefined}
-          className="w-full"
+          className="w-full rounded-lg text-lg font-semibold"
         >
           {post
             ? loading

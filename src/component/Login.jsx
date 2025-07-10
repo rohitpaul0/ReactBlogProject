@@ -11,8 +11,10 @@ function Login() {
   const dispatch = useDispatch();
   const { register, handleSubmit } = useForm();
   const [error, setError] = useState("");
+  const[loading,setLoading]=useState(false);
 
   const login = async (data) => {
+    setLoading(true)
     setError("");
     try {
       const session = await authService.login(data);
@@ -20,6 +22,7 @@ function Login() {
         const userData = await authService.getCurrentUser();
         if (userData) dispatch(authLogin(userData));
         navigate("/");
+        setLoading(false)
       }
     } catch (error) {
       setError(error.message);
@@ -53,6 +56,7 @@ function Login() {
         <form onSubmit={handleSubmit(login)} className="mt-4">
           <div className="space-y-4">
             <Input
+            className="border-none"
               label="Email:"
              placeholder="Enter your Email"
               type="email"
@@ -67,6 +71,7 @@ function Login() {
             />
 
             <Input
+            className="border-none"
               label="Password:"
               placeholder="Enter your Password"
               type="password"
@@ -75,8 +80,8 @@ function Login() {
               })}
             />
 
-            <Button type="submit" className="w-full mt-2">
-              Sign In
+            <Button type="submit" className="w-full mt-2 text-base font-semibold">
+              {loading ? "Plase Wait..":"Sign In"}
             </Button>
           </div>
         </form>

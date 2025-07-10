@@ -55,6 +55,7 @@ function Signup() {
         <form onClick={handleSubmit(create)}>
           <div className="Space-y-5 mt-2">
             <Input
+            className="border-none"
               label="Full Name:"
               placeholder="Enter your full name"
               {...register("name", {
@@ -63,6 +64,7 @@ function Signup() {
             />
 
             <Input
+            className="border-none"
               label="Email:"
               placeholder ="Enter your email"
               type="email"
@@ -77,6 +79,7 @@ function Signup() {
             />
 
             <Input
+              className="border-none"
               label="Password:"
               placeholder="Enter your password"
               type="password"
