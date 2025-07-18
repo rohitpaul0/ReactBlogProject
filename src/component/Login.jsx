@@ -32,7 +32,7 @@ function Login() {
   return (
     <div className="flex min-h-[80vh] items-center justify-center w-full">
       <div
-        className={`mx-auto w-full  max-w-lg bg-gray-100 rounded-xl p-10 border border-black/10`}
+        className={`mx-auto w-[85%] h-full sm:max-w-lg bg-gray-100 rounded-xl p-5 md:p-10 border border-black/10`}
       >
         <div className="mb-2 flex justify-center">
           <span className="inline-block w-full max-w-[100px]">
@@ -80,7 +80,7 @@ function Login() {
               })}
             />
 
-            <Button type="submit" className="w-full mt-2 text-base font-semibold">
+            <Button type="submit" className="w-full mt-2 text-base cursor-pointer font-semibold">
               {loading ? "Plase Wait..":"Sign In"}
             </Button>
           </div>
