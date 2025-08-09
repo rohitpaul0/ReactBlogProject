@@ -29,19 +29,19 @@ function Signup() {
   return (
     <div className="min-h-[80vh] w-full flex items-center justify-center ">
       <div
-        className={`mx-auto w-[85%] h-full sm:max-w-lg bg-gray-100
-        rounded-xl p-5 md:p-10 border border-black/10`}
+        className={`mx-auto w-[85%] h-full sm:max-w-md bg-transparent
+        rounded-xl p-5 md:p-10 border border-gray-400`}
       >
-        <div className="mb-2 flex justify-center">
+        <div className="mb-5 flex justify-center">
           <span className="inline-block w-full max-w-[100px]">
             <Logo width="100px" />
           </span>
         </div>
 
-        <h2 className="text-center text-xl sm:text-2xl font-bold leading-tight">
+        <h2 className="text-white text-center text-xl sm:text-2xl font-bold leading-tight">
           Sign up to create account
         </h2>
-        <p className="mt-2 text-center text-base text-black/60">
+        <p className="mt-2  text-center text-base text-gray-300">
           Already have an account?&nbsp;
           <Link
             to="/login"
@@ -55,7 +55,7 @@ function Signup() {
          <form onSubmit={handleSubmit(create)} className="">
                     <div className='space-y-1 mt-2'>
                         <Input
-                        className="border-none"
+                        className="border-gray-400"
                         label="Full Name: "
                         placeholder="Enter your full name"
                         {...register("name", {
@@ -63,7 +63,7 @@ function Signup() {
                         })}
                         />
                         <Input
-                        className="border-none"
+                        className="border-gray-400"
                         label="Email: "
                         placeholder="Enter your email"
                         type="email"
@@ -76,7 +76,7 @@ function Signup() {
                         })}
                         />
                         <Input
-                        className="border-none"
+                        className="border-gray-400"
                         label="Password:"
                         type="password"
                         placeholder="Enter your password"

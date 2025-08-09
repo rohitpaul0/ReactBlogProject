@@ -29,7 +29,14 @@ export default function PostForm({ post }) {
 
   const submit = async (data) => {
     dispatch(setLoading(true));
+    console.log("Data",{...data});
     try {
+     data.content = (function stripHtmlTags(html) {
+      const tempDiv = document.createElement("div");
+      tempDiv.innerHTML = html;
+      return tempDiv.textContent || tempDiv.innerText || "";
+    })(data.content);
+
       if (post) {
         const noChange =
           data.title === post.title &&
@@ -37,24 +44,27 @@ export default function PostForm({ post }) {
           data.content === post.content &&
           data.status === post.status &&
           !data.image?.[0];
+
         if (noChange) {
           dispatch(setLoading(false));
           navigate("/");
           return;
         }
+
         const file = data.image?.[0];
         let uploadFile = null;
-
         if (file) {
           const options = {
             maxSizeMB: 1,
             maxWidthOrHeight: 1920,
             useWebWorker: true,
           };
+
           const compressedFile = await imageCompression(file, options);
           const finalFile = new File([compressedFile], file.name, {
             type: compressedFile.type,
           });
+          
           uploadFile = await appWriteService.uploadFile(finalFile);
           if (uploadFile) {
             await appWriteService.deleteFile(post.featuredImage);
@@ -128,16 +138,16 @@ export default function PostForm({ post }) {
   return (
     <form onSubmit={handleSubmit(submit)} className="flex flex-col md:flex-row w-full space-x-0 lg:space-x-10">
       <div className="w-full h-full md:w-2/3 px-5">
-        <label className="text-white font-semibold text-lg">Title:</label>
+        <label className="text-white font-semibold text-base">Title:</label>
         <Input 
           placeholder="Title"
-          className="mb-4"
+          className="mb-4 text-white"
           {...register("title", { required: true })}
         />
-        <label className="text-white font-semibold text-lg">Slug:</label>
+        <label className="text-white font-semibold text-base">Slug:</label>
         <Input
           placeholder="Slug"
-          className="mb-4"
+          className="mb-4 text-white"
           {...register("slug", { required: true })}
           onInput={(e) => {
             setValue("slug", slugTransform(e.currentTarget.value), {
@@ -145,7 +155,7 @@ export default function PostForm({ post }) {
             });
           }}
         />
-        <label className="text-white font-semibold text-lg">Content:</label>
+        <label className="text-white font-semibold text-base">Content:</label>
         <RTE
           name="content"
           control={control}
@@ -153,10 +163,10 @@ export default function PostForm({ post }) {
         />
       </div>
       <div className="w-full md:w-1/3 px-2">
+        <label className="text-white font-semibold text-base">Featured Image:</label>
         <Input
-          label="Featured Image :"
           type="file"
-          className="mb-4 file:mr-4 file:py-0.5 file:px-5 file:rounded-md file:border-1 file:text-sm file:font-semibold file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200"
+          className="mb-4 text-white file:mr-4 file:py-0.5 file:px-5 file:rounded-md file:border-1 file:text-sm file:font-semibold file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200"
           accept="image/png, image/jpg, image/jpeg, image/gif"
           {...register("image", {
             required: !post,

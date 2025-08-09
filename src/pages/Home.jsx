@@ -55,7 +55,7 @@ function Home() {
       ) : (
         <Container>
           <div className="flex flex-start ml-3 mb-10 text-3xl font-bold text-white">
-            {user ? <p>Welcome {user.name}</p> : null}
+            {user ? <p>Welcome <span className="text-blue-300"> {user.name} </span></p>  : null}
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 w-full px-3 mb-10">
             {posts?.map((post) => (

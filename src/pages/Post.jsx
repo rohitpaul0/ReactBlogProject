@@ -48,7 +48,7 @@ export default function Post() {
   if (loading || !post) return null;
 
   return post ? (
-    <div className="py-8">
+    <div className="py-8 min-h-[80vh]">
       <Container>
         <div className="w-full md:w-[80%] lg:w-[64%] mx-auto flex justify-center mb-4 relative  rounded-xl p-2">
           <img

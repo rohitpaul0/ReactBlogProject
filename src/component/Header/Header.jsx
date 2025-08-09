@@ -15,14 +15,9 @@ function Header() {
 
   const menuref = React.useRef(null);
   const handleClick = (e) => {
-    if (
-      open &&
-
-      e.target.tagName === "BUTTON"
-    ) {
+    if (open && e.target.tagName === "BUTTON") {
       setOpen(false);
     }
-    
   };
   document.addEventListener("click", handleClick);
 
@@ -55,7 +50,7 @@ function Header() {
   ];
 
   return (
-    <header className="py-0 shadow bg-slate-800">
+    <header className="py-0 bg-[color:var(--navbar-bg)] shadow-2xl ">
       <Container>
         <nav className="flex justify-between">
           <div className="mr-4 flex items-center">
@@ -63,7 +58,7 @@ function Header() {
               <Logo width="70px" />
             </Link>
           </div>
-          <ul className="ml-auto hidden md:flex text-white text-lg">
+          <ul className="ml-auto hidden md:flex text-white text-base">
             {navIteams.map((iteam) =>
               iteam.active ? (
                 <li key={iteam.name}>

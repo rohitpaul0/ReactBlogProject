@@ -32,17 +32,17 @@ function Login() {
   return (
     <div className="flex min-h-[80vh] items-center justify-center w-full">
       <div
-        className={`mx-auto w-[85%] h-full sm:max-w-lg bg-gray-100 rounded-xl p-5 md:p-10 border border-black/10`}
+        className={`mx-auto w-[85%] h-full sm:max-w-md bg-slate-900 rounded-xl p-5 md:p-10 border border-slate-400`}
       >
-        <div className="mb-2 flex justify-center">
+        <div className="mb-5 flex justify-center">
           <span className="inline-block w-full max-w-[100px]">
             <Logo width="100%" />
           </span>
         </div>
-        <h2 className="text-center text-2xl font-bold leading-tight">
+        <h2 className="text-center text-white text-2xl font-bold leading-tight">
           Sign in to your account
         </h2>
-        <p className="mt-2 text-center text-base text-black/60">
+        <p className="mt-2 text-center text-base text-gray-300">
           Don&apos;t have any account?&nbsp;
           <Link
             to="/signup"
@@ -56,7 +56,7 @@ function Login() {
         <form onSubmit={handleSubmit(login)} className="mt-4">
           <div className="space-y-4">
             <Input
-            className="border-none"
+            className="border-gray-400"
               label="Email:"
              placeholder="Enter your Email"
               type="email"
@@ -71,7 +71,7 @@ function Login() {
             />
 
             <Input
-            className="border-none"
+            className="border-gray-400"
               label="Password:"
               placeholder="Enter your Password"
               type="password"

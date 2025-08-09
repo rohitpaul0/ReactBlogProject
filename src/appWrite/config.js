@@ -41,10 +41,10 @@ export class Service {
         conf.appwriteCollectionId,
         slug,
         {
-          status,
           title,
-          featuredImage,
           content,
+          featuredImage,
+          status,
         }
       );
     } catch (error) {
