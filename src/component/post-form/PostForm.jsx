@@ -29,7 +29,6 @@ export default function PostForm({ post }) {
 
   const submit = async (data) => {
     dispatch(setLoading(true));
-    console.log("Data",{...data});
     try {
      data.content = (function stripHtmlTags(html) {
       const tempDiv = document.createElement("div");

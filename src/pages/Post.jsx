@@ -15,7 +15,6 @@ export default function Post() {
   const post = useSelector((state) =>
     state.posts.posts.find((p) => p.$id === slug)
   );
-  console.log("post", typeof post);
 
   const [loading, setLoading] = useState(!post);
 

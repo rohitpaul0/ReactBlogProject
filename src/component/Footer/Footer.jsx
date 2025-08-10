@@ -3,9 +3,9 @@ import { Link } from "react-router-dom";
 import Logo from "../Logo";
 function Footer() {
   return (
-    <section className="relative bottom-0 border-t border-gray-500 overflow-hidden  bg-[var(--navbar-bg)]">
+    <section className="relative w-full h-[10vh] bottom-0 border-t  border-gray-500 overflow-hidden  bg-[var(--navbar-bg)]">
       
-      <div className="relative z-10 py-4 mx-auto max-w-7xl px-4 flex items-center justify-between">
+      <div className="relative z-10 mx-auto h-full max-w-7xl px-4 flex items-center justify-between">
         <div className="inline-flex text-white text-center">
           <Logo width="100px" />
         </div>
@@ -17,7 +17,6 @@ function Footer() {
           >
             Rohit
           </a>
-          .
         </div>
       </div>
     </section>
